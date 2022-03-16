@@ -17,15 +17,31 @@ namespace MedForm
       {
         DataRow row = dataSet.Tables[0].Rows[index];
         FieldOps.FieldInfo fieldInfo = new FieldOps.FieldInfo();
+                fieldInfo.FromRow(row);
+
                 foreach (DataRow temp_row in dataSet_Temp.Tables[0].Rows)
                 {
                     if (row.ItemArray[0].ToString() == temp_row.ItemArray[0].ToString())
                     {
-                        fieldInfo.Value = temp_row.ItemArray[1];
+                        string temp_val = temp_row.ItemArray[1].ToString();
+                        
+
+                        fieldInfo.Value = temp_val.TrimEnd(' ');
                         break;
+                        /*
+                        if (fieldInfo.Type == FieldType.ForeignKey)
+                        {
+                            fieldInfo.Value = fieldInfo.FkeyValues[int.Parse(temp_row.ItemArray[1].ToString())];
+                            break;
+                        }
+                        else
+                        {
+                            fieldInfo.Value = temp_row.ItemArray[1];
+                            break;
+                        }*/
                     }
                 }
-                fieldInfo.FromRow(row);
+                
                 this.Fields.Add(fieldInfo);
             }
     }
@@ -88,8 +104,9 @@ namespace MedForm
         this.IsHeader = int.Parse(row["IsHeader"].ToString()) == 1;
         this.PhraseList = (Dictionary<string, List<string>>) null;
         this.FkeyValues = (Dictionary<int, string>) null;
+                
         this.GetValue(row);
-        //this.Value = Val;
+        
         if (this.Type == FieldOps.FieldType.MultiText)
           this.GetPhraseList();
         this.IsModified = false;

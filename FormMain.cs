@@ -241,7 +241,7 @@ namespace MedForm
         case FieldOps.FieldType.Checkbox:
           CheckBox checkBox = new CheckBox();
           checkBox.Enabled = !fi.IsReadOnly;
-          checkBox.Checked = (int) fi.Value == 1;
+          checkBox.Checked = int.Parse(fi.Value.ToString()) == 1;
           checkBox.CheckedChanged += new EventHandler(this.Control_ValueChanged);
           control = (Control) checkBox;
           break;
@@ -249,7 +249,7 @@ namespace MedForm
           TextBox textBox2 = new TextBox();
           textBox2.ReadOnly = true;
           string empty = string.Empty;
-          fi.FkeyValues.TryGetValue((int) fi.Value, out empty);
+          fi.FkeyValues.TryGetValue(int.Parse(fi.Value.ToString()), out empty);
           textBox2.Text = empty;
           control = (Control) textBox2;
           break;
